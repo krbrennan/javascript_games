@@ -66,6 +66,17 @@ function moveAll(){
     ballReset();
   }
 
+  let ballBrickCol = Math.floor(ballX / blockWidth);
+  let ballBrickRow = Math.floor(ballY / blockHeight);
+
+  // showXY(ballBrickCol + ',' + ballBrickRow, ballX, ballY, 'yellow');
+
+  if(ballBrickCol >= 0 &&
+    ballBrickRow < blockRows){
+      // deletes block if mouse is hovering on existing block
+      blockTruth[ballBrickRow][ballBrickCol] = false
+    }
+
   // reflect ball
   let paddleTopEdgeY = canvas.height - paddleYDistFromEdge;
   let paddleBottomEdgeY = paddleTopEdgeY + paddleThickness;
@@ -78,7 +89,7 @@ function moveAll(){
 
     let centerOfPaddleX = paddleX - (paddleLength / 2);
     let ballDistanceFromPaddleCenterX = paddleX - paddleLength;
-    ballSpeedX = ballDistanceFromPaddleCenterX * 0.05;
+    ballSpeedX = ballDistanceFromPaddleCenterX * 0.025;
   }
 
 }
@@ -103,8 +114,15 @@ function drawAll(){
   ctx.fillStyle = 'yellow';
   ctx.fillRect(paddleX, paddleY, paddleLength, paddleThickness);
 
-
 // draw blocks
+  drawBlocks();
+}
+
+function handlePaddle(e){
+  paddleX = e.offsetX - (paddleLength / 2);
+}
+
+function drawBlocks(){
   let rowNum = 0;
   let blockNum = 0;
   blockTruth.forEach(row => {
@@ -118,14 +136,6 @@ function drawAll(){
     blockNum = 0;
     rowNum++;
   })
-
-
-  showXY(mouseX+','+mouseY, mouseX, mouseY, 'yellow');
-  // console.log(blockTruth)
-}
-
-function handlePaddle(e){
-  paddleX = e.offsetX - (paddleLength / 2);
 }
 
 //
