@@ -23,9 +23,9 @@ const paddleThickness = 10;
 const paddleLength = 100;
 
 // Blocks
-const numBlocks = 8;
-const blockRows = 4;
-const blockHeight = 30;
+const numBlocks = 16;
+const blockRows = 8;
+const blockHeight = 15;
 const blockWidth = 100;
 let blockTruth = [...Array(blockRows)].map(e => Array(numBlocks));
 
@@ -74,7 +74,10 @@ function moveAll(){
   if(ballBrickCol >= 0 &&
     ballBrickRow < blockRows){
       // deletes block if mouse is hovering on existing block
-      blockTruth[ballBrickRow][ballBrickCol] = false
+      if(blockTruth[ballBrickRow][ballBrickCol]){
+        blockTruth[ballBrickRow][ballBrickCol] = false
+        ballSpeedY *= -1        
+      }
     }
 
   // reflect ball
