@@ -1,3 +1,5 @@
+
+
 window.onload = function(){
   canvas = document.getElementById('canvas');
   ctx = canvas.getContext('2d');
@@ -22,9 +24,10 @@ const paddleLength = 100;
 
 // Blocks
 const numBlocks = 8;
+const blockRows = 4;
 const blockHeight = 30;
 const blockWidth = 100;
-let blockTruth = new Array(numBlocks);
+let blockTruth = [...Array(blockRows)].map(e => Array(numBlocks));
 
 //
 //
@@ -32,9 +35,11 @@ let blockTruth = new Array(numBlocks);
 //
 
 function blockReset(){
-  for(let i = 0; i < numBlocks; i++){
-    blockTruth[i] = true;
-  }
+  blockTruth.forEach((row) => {
+    for(let i = 0; i < numBlocks; i++){
+      row[i] = true;
+    }
+  });
 }
 
 function updateAll(){
@@ -98,14 +103,25 @@ function drawAll(){
   ctx.fillStyle = 'yellow';
   ctx.fillRect(paddleX, paddleY, paddleLength, paddleThickness);
 
-  for(let i = 0; i < numBlocks; i++){
-    if(blockTruth[i]){
-      ctx.fillStyle = 'blue';
-      ctx.fillRect(blockWidth*i, 0, blockWidth - 2, blockHeight)
-    }
-  }
+
+// draw blocks
+  let rowNum = 0;
+  let blockNum = 0;
+  blockTruth.forEach(row => {
+    row.forEach(block => {
+      if(block){
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(blockWidth * blockNum, blockHeight * rowNum, blockWidth - 2, blockHeight - 2)
+      }
+      blockNum++;
+    })
+    blockNum = 0;
+    rowNum++;
+  })
+
 
   showXY(mouseX+','+mouseY, mouseX, mouseY, 'yellow');
+  // console.log(blockTruth)
 }
 
 function handlePaddle(e){
