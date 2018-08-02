@@ -25,7 +25,7 @@ const paddleLength = 100;
 // Blocks
 const numBlocks = 16;
 const blockRows = 8;
-const blockHeight = 15;
+const blockHeight = 30;
 const blockWidth = 100;
 let blockTruth = [...Array(blockRows)].map(e => Array(numBlocks));
 
@@ -46,6 +46,8 @@ function updateAll(){
   moveAll();
   drawAll();
 }
+
+
 
 function moveAll(){
   ballX += ballSpeedX;
@@ -69,6 +71,8 @@ function moveAll(){
   let ballBrickCol = Math.floor(ballX / blockWidth);
   let ballBrickRow = Math.floor(ballY / blockHeight);
 
+
+
   // showXY(ballBrickCol + ',' + ballBrickRow, ballX, ballY, 'yellow');
 
   if(ballBrickCol >= 0 &&
@@ -76,7 +80,18 @@ function moveAll(){
       // deletes block if mouse is hovering on existing block
       if(blockTruth[ballBrickRow][ballBrickCol]){
         blockTruth[ballBrickRow][ballBrickCol] = false
-        ballSpeedY *= -1        
+
+        let lastBallX = ballX - ballSpeedX;
+        let lastBallY = ballY - ballSpeedY;
+        let prevBlockCol = Math.floor(lastBallX / blockWidth);
+        let prevBlokRow = Math.floor(lastBallY / blockWidth);
+        if(prevBlockCol != ballBrickCol){
+          ballSpeedX *= -1;
+
+        }
+        if(prevBlokRow != ballBrickRow){
+          ballSpeedY *= -1;
+        }
       }
     }
 
@@ -94,7 +109,6 @@ function moveAll(){
     let ballDistanceFromPaddleCenterX = paddleX - paddleLength;
     ballSpeedX = ballDistanceFromPaddleCenterX * 0.025;
   }
-
 }
 
 function ballReset(){
